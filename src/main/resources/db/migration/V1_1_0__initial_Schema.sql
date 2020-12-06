@@ -22,7 +22,7 @@ CREATE TABLE if NOT EXISTS campaign(
 )engine=innodb;
 
 CREATE TABLE if NOT EXISTS break_campaign(
-    id BIGINT NOT NULL,
+    id BIGINT AUTO_INCREMENT NOT NULL,
     break_id BIGINT NOT NULL,
     campaign_id BIGINT NOT NULL,
     PRIMARY KEY (id),
