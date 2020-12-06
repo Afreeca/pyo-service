@@ -41,9 +41,4 @@ public class Campaign {
     @NotBlank
     @Column(name="pyo_percentage")
     private int pyoPercentage;
-
-    @ApiModelProperty(notes = "The identifier of the break")
-    @NotBlank
-    @Column(name = "break_id")
-    private Long breakId;
 }

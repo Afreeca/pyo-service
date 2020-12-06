@@ -7,7 +7,4 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CampaignRepository extends JpaRepository<Campaign, Long> {
-    Optional<Campaign> findByCampaignId(Long campaignId);
-    void deleteByBreakId(Long breakId);
-}
+public interface CampaignRepository extends JpaRepository<Campaign, Long> { }
