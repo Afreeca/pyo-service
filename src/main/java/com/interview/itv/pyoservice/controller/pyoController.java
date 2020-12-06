@@ -12,12 +12,12 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
-@ApiOperation(value="/pyo/v1/wall", tags = "PYO RestFul API" )
+@ApiOperation(value="/pyo/v1/", tags = "PYO RestFul API" )
 @ApiResponses(value = {
         @ApiResponse(code = 400, message = "Something went wrong"),
         @ApiResponse(code = 401, message = "Unauthorised Operation"),
         @ApiResponse(code = 403, message = "Access denied")})
-public class scheduleController {
+public class pyoController {
 
     @ApiOperation(value="Get a list of breaks with their associated PYO requests")
     @GetMapping("/break")

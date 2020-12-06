@@ -29,6 +29,7 @@ dependencies {
 
 	developmentOnly "org.springframework.boot:spring-boot-devtools"
 	compile "org.flywaydb:flyway-core:$flywayVersion"
+	runtimeOnly 'mysql:mysql-connector-java:8.0.21'
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 	compileOnly "org.projectlombok:lombok:$lombokVersion"
 	implementation "io.springfox:springfox-swagger2:$swaggerVersion"

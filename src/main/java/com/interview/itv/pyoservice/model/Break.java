@@ -16,16 +16,18 @@ public class Break {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(notes = "Unique key that identifies the break")
+    @Column(name="break_id")
     private Long breakId;
 
     @ApiModelProperty(notes = "Broadcast date")
     @NotBlank
+    @Column(name="broadcast_date")
     @JsonFormat(pattern = Constants.DATE_FORMAT)
     private LocalDate date;
 
     @ApiModelProperty(notes = "The start time for the break")
     @NotBlank
-    private Long time;
+    private int time;
 
     @ApiModelProperty(notes = "The duration of the break in seconds")
     @NotBlank
