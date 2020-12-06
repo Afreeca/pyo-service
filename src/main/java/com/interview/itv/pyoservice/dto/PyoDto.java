@@ -1,34 +1,29 @@
-package com.interview.itv.pyoservice.model;
+package com.interview.itv.pyoservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.interview.itv.pyoservice.utils.Constants;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
-@Entity
-@Data
-@Table(name = "break")
-public class Break {
+public class PyoDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(notes = "Unique key that identifies the break")
-    @Column(name="id")
-    private Long breakId;
+    @ApiModelProperty(notes = "Unique Id that identifies the Advertiser")
+    @Column(name="Advertiser_id")
+    private String AdvertiserId;
+
+    @ApiModelProperty(notes = "the length of the advertisement in seconds")
+    @Column(name="spot_length")
+    private int spotLength;
 
     @ApiModelProperty(notes = "Broadcast date")
-    @NotBlank
     @Column(name="broadcast_date")
     @JsonFormat(pattern = Constants.DATE_FORMAT)
     private LocalDate date;
 
     @ApiModelProperty(notes = "The start time for the break")
-    @NotBlank
-    @Column(name="start_time")
     private int time;
 
     @ApiModelProperty(notes = "The duration of the break in seconds")

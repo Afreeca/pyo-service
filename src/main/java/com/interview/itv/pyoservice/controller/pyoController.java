@@ -1,5 +1,7 @@
 package com.interview.itv.pyoservice.controller;
 
+import com.interview.itv.pyoservice.dto.PyoDto;
+import com.interview.itv.pyoservice.model.Campaign;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
@@ -21,32 +24,19 @@ public class pyoController {
 
     @ApiOperation(value="Get a list of breaks with their associated PYO requests")
     @GetMapping("/break")
-    public ResponseEntity<ArrayList<?>> getBreaks() {
+    public ResponseEntity<ArrayList<PyoDto>> getBreaksPyo() {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @ApiOperation(value="Book a PYO request for a campaign in a specific break")
     @PostMapping("/break")
-    public ResponseEntity<ArrayList<?>> bookPyo() {
+    public ResponseEntity<Campaign> bookPyo(@Valid @RequestBody PyoDto Pyo) {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
 
     @ApiOperation(value="Cancel a PYO request")
-    @DeleteMapping("/break/{breakId}")
-    public ResponseEntity<ArrayList<?>> cancelPyo(@PathVariable int breakId) {
+    @DeleteMapping("/break/{campaignId}")
+    public ResponseEntity<Campaign> cancelPyo(@PathVariable int campaignId) {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
-//	private void validateInput(UUID clientId, LocalDate from, LocalDate to, long limit, long offset) {
-//		if (clientId == null) {
-//			throw new BadRequestException("null client id", "client id cannot be null", "get-on-us-payments.null-client");
-//		} else if (from != null && to != null && to.isBefore(from)) {
-//			throw new BadRequestException("invalid dates", "to date cannot be before from", "get-on-us-payments.invalid-dates");
-//		} else if (limit <= 0) {
-//			throw new BadRequestException("invalid limit", "limit must be positive", "get-on-us-payments.invalid-limit");
-//		} else if (offset < 0) {
-//			throw new BadRequestException("invalid offset", "offset cannot be negative", "get-on-us-payments.invalid-offset");
-//		}
-//	}
 }

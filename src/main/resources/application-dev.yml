@@ -3,10 +3,12 @@ spring:
     url: jdbc:mysql://localhost:3308/pyo-service?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 123itv456
+    initialize=true:
     initialization-mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
   flyway:
-    clean-on-validation-error: true
-    baseline-on-migrate: true
+    validateOnMigrate: true
+    cleanOnValidationError: true
+    baselineOnMigrate: true
