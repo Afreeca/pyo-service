@@ -23,11 +23,4 @@ public class Pyo {
     @ApiModelProperty(notes = "Unique key that identifies the break")
     @Column(name="campaign_id")
     private Long campaignId;
-
-    public static Pyo convert(PyoDtoRequest pyoDtoRequest){
-    Pyo test = new Pyo();
-        test.setBreakId(pyoDtoRequest.getBreakId());
-        test.setCampaignId(pyoDtoRequest.getCampaignId());
-        return test;
-    }
 }

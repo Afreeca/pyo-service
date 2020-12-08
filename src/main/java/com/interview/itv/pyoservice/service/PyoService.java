@@ -7,5 +7,6 @@ import org.springframework.stereotype.Service;
 public interface PyoService {
     Pyo bookPyo(Pyo pyo);
     Pyo getAll();
+    boolean pyoExists(Long pyo);
     void cancelPyo(Long pyoId);
 }

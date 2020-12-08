@@ -23,7 +23,7 @@ public class Break {
     @ApiModelProperty(notes = "Broadcast date")
     @NotBlank
     @Column(name="broadcast_date")
-    @JsonFormat(pattern = Constants.DATE_FORMAT)
+    @JsonFormat(pattern = Constants.DB_DATE_FORMAT)
     private LocalDate date;
 
     @ApiModelProperty(notes = "The start time for the break")

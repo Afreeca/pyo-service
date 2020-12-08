@@ -22,6 +22,12 @@ public class PyoServiceImp implements PyoService {
     }
 
     @Override
-    public void cancelPyo(Long pyoId) {
+    public void cancelPyo(Long CampaignId) {
+        pyoRepository.deletePyoByCampaignId(CampaignId);
+    }
+
+    @Override
+    public boolean pyoExists(Long pyo) {
+        return pyoRepository.existsById(pyo);
     }
 }

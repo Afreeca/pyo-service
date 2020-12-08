@@ -18,7 +18,7 @@ public class PyoDtoResponse {
     private int spotLength;
 
     @ApiModelProperty(notes = "Broadcast date")
-    @JsonFormat(pattern = Constants.DATE_FORMAT)
+    @JsonFormat(pattern = Constants.DB_DATE_FORMAT)
     private LocalDate date;
 
     @ApiModelProperty(notes = "The start time for the break")
