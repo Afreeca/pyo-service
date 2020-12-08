@@ -4,6 +4,7 @@ import com.interview.itv.pyoservice.utils.Constants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,8 +14,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
@@ -25,15 +28,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
+        List<String> list = new ArrayList<>();
+        for (FieldError x : ex.getBindingResult().getFieldErrors()) {
+            String defaultMessage = x.getDefaultMessage();
+            list.add(defaultMessage);
+        }
+
         ExceptionMessage exceptionMessage = ExceptionMessage.builder()
                 .timestamp(now.format(DateTimeFormatter.ofPattern(Constants.ERROR_DATE_PATTERN)))
                 .httpStatus(status)
                 .httpCode(status.value())
-                .details(ex.getBindingResult()
-                        .getFieldErrors()
-                        .stream()
-                        .map(x -> x.getDefaultMessage())
-                        .collect(Collectors.toList()))
+                .details(list)
                 .build();
 
         return new ResponseEntity<>(exceptionMessage, headers, status);
@@ -53,7 +58,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     public ResponseEntity<ExceptionMessage> handleServerErrorException(PyoExistsException exception, HttpServletRequest request) {
         ExceptionMessage exceptionMessage = ExceptionMessage.builder()
                 .timestamp(now.format(DateTimeFormatter.ofPattern(Constants.ERROR_DATE_PATTERN)))
-                .details(Arrays.asList(exception.getMessage()))
+                .details(Collections.singletonList(exception.getMessage()))
                 .httpStatus(HttpStatus.CONFLICT)
                 .build();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.CONFLICT);
@@ -63,7 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     public ResponseEntity<ExceptionMessage> handleServerErrorException(InternalServiceErrorException exception, HttpServletRequest request) {
         ExceptionMessage exceptionMessage = ExceptionMessage.builder()
                 .timestamp(now.format(DateTimeFormatter.ofPattern(Constants.ERROR_DATE_PATTERN)))
-                .details(Arrays.asList(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
+                .details(Collections.singletonList(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()))
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .build();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.INTERNAL_SERVER_ERROR);

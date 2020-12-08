@@ -3,12 +3,13 @@ package com.interview.itv.pyoservice.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.interview.itv.pyoservice.utils.Constants;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
+@Builder
+@Setter
 public class PyoDtoResponse {
 
     @ApiModelProperty(notes = "Unique Id that identifies the Advertiser")

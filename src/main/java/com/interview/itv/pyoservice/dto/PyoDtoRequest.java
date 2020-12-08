@@ -1,12 +1,14 @@
 package com.interview.itv.pyoservice.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 public class PyoDtoRequest implements Serializable {
 
     @ApiModelProperty(notes = "Unique key that identifies the break")

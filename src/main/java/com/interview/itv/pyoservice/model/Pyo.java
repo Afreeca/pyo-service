@@ -1,6 +1,5 @@
 package com.interview.itv.pyoservice.model;
 
-import com.interview.itv.pyoservice.dto.PyoDtoRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
