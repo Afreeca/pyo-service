@@ -12,9 +12,7 @@ public class PyoServiceImp implements PyoService {
     PyoRepository pyoRepository;
 
     @Override
-    public Pyo bookPyo(Pyo pyo) {
-        return pyoRepository.save(pyo);
-    }
+    public Pyo bookPyo(Pyo pyo) { return pyoRepository.save(pyo); }
 
     @Override
     public Pyo getAll() {
@@ -22,12 +20,14 @@ public class PyoServiceImp implements PyoService {
     }
 
     @Override
-    public void cancelPyo(Long CampaignId) {
-        pyoRepository.deletePyoByCampaignId(CampaignId);
-    }
+    public void cancelPyo(Long pyoId) { pyoRepository.deleteById(pyoId); }
 
     @Override
     public boolean pyoExists(Long pyo) {
         return pyoRepository.existsById(pyo);
     }
+
+    @Override
+    public void cancelPyoByCampaignId(Long campaignId) { }
+    // new service to check if the same advertiserId have book the same breakId
 }

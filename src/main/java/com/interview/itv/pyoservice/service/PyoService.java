@@ -9,4 +9,5 @@ public interface PyoService {
     Pyo getAll();
     boolean pyoExists(Long pyo);
     void cancelPyo(Long pyoId);
+    void cancelPyoByCampaignId(Long campaignId);
 }

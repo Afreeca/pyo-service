@@ -3,7 +3,6 @@ package com.interview.itv.pyoservice.controller;
 import com.interview.itv.pyoservice.dto.PyoDtoRequest;
 import com.interview.itv.pyoservice.dto.PyoDtoResponse;
 import com.interview.itv.pyoservice.exception.NotFoundException;
-import com.interview.itv.pyoservice.exception.PyoExistsException;
 import com.interview.itv.pyoservice.model.Pyo;
 import com.interview.itv.pyoservice.repository.BreakRepository;
 import com.interview.itv.pyoservice.repository.CampaignRepository;
@@ -56,18 +55,18 @@ public class PyoController {
     }
 
     @ApiOperation(value="Cancel a PYO request")
-    @DeleteMapping(value="/break/{campaignId}")
-    public ResponseEntity<Void> cancelPyo(@PathVariable Long campaignId) {
-        if(!pyoService.pyoExists(campaignId))
-            throw new NotFoundException(String.format("PYO with campaignId '%d' Not found", campaignId));
-        pyoService.cancelPyo(campaignId);
+    @DeleteMapping(value="/break/{pyoId}")
+    public ResponseEntity<Void> cancelPyo(@PathVariable Long pyoId) {
+        if(!pyoService.pyoExists(pyoId))
+            throw new NotFoundException(String.format("PYO with Id '%d' Not found", pyoId));
+        pyoService.cancelPyo(pyoId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     private void validatePyoRequest(PyoDtoRequest pyo) {
-        if (campaignRepository.existsById(pyo.getCampaignId()) && breakRepository.existsById(pyo.getBreakId())) {
-            throw new PyoExistsException(String.format("Pyo with campaignId '%d' and breakId '%d' already exists", pyo.getCampaignId(), pyo.getBreakId()));
-        } else if (!campaignRepository.existsById(pyo.getCampaignId())) {
+//        if (campaignRepository.existsById(pyo.getCampaignId()) && breakRepository.existsById(pyo.getBreakId())) {
+//            throw new PyoExistsException(String.format("Pyo with campaignId '%d' and breakId '%d' already exists", pyo.getCampaignId(), pyo.getBreakId()));
+        if (!campaignRepository.existsById(pyo.getCampaignId())) {
             throw new NotFoundException(String.format("Campaign with Id '%d' Not found", pyo.getCampaignId()));
         } else if (!breakRepository.existsById(pyo.getBreakId())) {
             throw new NotFoundException(String.format("Break with Id '%d' Not found", pyo.getCampaignId()));
