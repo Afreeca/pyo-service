@@ -4,6 +4,8 @@
     * pyo-service is an Internal tools used by ITV departments
     * The advertising team has access to the list of Breaks and existing campaigns with their Ids(breaksId, campaignId)
 
+---
+---
 
 ### Requirement
     * Docker
@@ -24,6 +26,9 @@
           --publish 3308:3306 \
           mysql`
     
+---
+---
+
 ### Running the application locally from the command line using gradle
 
 In the base directory (containing gradlew) build and run the service application
@@ -41,6 +46,7 @@ In the base directory (containing gradlew) build and run the service application
 2. Access the swagger documentation describing the API and all the expected request datatype and more
     * You can use Curl. but Postman would be the best option
     * https://www.postman.com/
+      * There is a postman COllection `_dev_/itv-pyo.postman_collection.json` ready to be imported 
     
 ---
 ---
