@@ -1,6 +1,7 @@
 package com.interview.itv.pyoservice.exception;
 
 import com.interview.itv.pyoservice.utils.Constants;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -15,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,14 +49,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     public ResponseEntity<ExceptionMessage> handleNotFoundException(NotFoundException exception, HttpServletRequest request) {
         ExceptionMessage exceptionMessage = ExceptionMessage.builder()
                 .timestamp(now.format(DateTimeFormatter.ofPattern(Constants.ERROR_DATE_PATTERN)))
-                .details(Arrays.asList(exception.getMessage()))
+                .details(Collections.singletonList(exception.getMessage()))
                 .httpStatus(HttpStatus.NOT_FOUND)
                 .build();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(PyoExistsException.class)
-    public ResponseEntity<ExceptionMessage> handleServerErrorException(PyoExistsException exception, HttpServletRequest request) {
+    public ResponseEntity<ExceptionMessage> handlePyoExistsException(PyoExistsException exception, HttpServletRequest request) {
         ExceptionMessage exceptionMessage = ExceptionMessage.builder()
                 .timestamp(now.format(DateTimeFormatter.ofPattern(Constants.ERROR_DATE_PATTERN)))
                 .details(Collections.singletonList(exception.getMessage()))
@@ -72,5 +73,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .build();
         return new ResponseEntity<>(exceptionMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ExceptionMessage> handleDataIntegrityViolationException(HttpServletRequest request, Exception exception) {
+        ExceptionMessage exceptionMessage = ExceptionMessage.builder()
+            .timestamp(now.format(DateTimeFormatter.ofPattern(Constants.ERROR_DATE_PATTERN)))
+            .details(Collections.singletonList("PYO request for this advertiser in the same break already exist"))
+            .httpStatus(HttpStatus.CONFLICT)
+            .build();
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.CONFLICT);
     }
 }

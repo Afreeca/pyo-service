@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -21,17 +21,17 @@ public class Break {
     private Long breakId;
 
     @ApiModelProperty(notes = "Broadcast date")
-    @NotBlank
+    @NotNull
     @Column(name="broadcast_date")
     @JsonFormat(pattern = Constants.DB_DATE_FORMAT)
     private LocalDate date;
 
     @ApiModelProperty(notes = "The start time for the break")
-    @NotBlank
+    @NotNull
     @Column(name="start_time")
     private int time;
 
     @ApiModelProperty(notes = "The duration of the break in seconds")
-    @NotBlank
+    @NotNull
     private int duration;
 }

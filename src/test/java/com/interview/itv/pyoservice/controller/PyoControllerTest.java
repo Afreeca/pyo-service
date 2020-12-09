@@ -1,17 +1,20 @@
-package com.interview.itv.pyoservice.service;
+package com.interview.itv.pyoservice.controller;
 
 import com.interview.itv.pyoservice.dto.PyoDtoRequest;
+import com.interview.itv.pyoservice.exception.NotFoundException;
 import com.interview.itv.pyoservice.model.Break;
 import com.interview.itv.pyoservice.model.Campaign;
 import com.interview.itv.pyoservice.model.Pyo;
-import com.interview.itv.pyoservice.repository.PyoRepository;
+import com.interview.itv.pyoservice.service.PyoService;
 import com.interview.itv.pyoservice.utils.Types;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -20,17 +23,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PyoServiceTest {
-
-    @InjectMocks
-    PyoServiceImp pyoService;
+public class PyoControllerTest {
 
     @Mock
-    PyoRepository pyoRepository;
+    PyoService pyoService;
+
+    @InjectMocks
+    PyoController pyoController;
 
     Break breakA;
     Campaign campaignA;
@@ -39,7 +41,6 @@ public class PyoServiceTest {
 
     Map<String, Object> pyoMap;
     List<Map<String, Object>> pyolist;
-
     @Before
     public void init(){
 
@@ -81,36 +82,33 @@ public class PyoServiceTest {
     }
 
     @Test
-    public void testBookPyo() {
-        when(pyoRepository.save(pyoA)).thenReturn(pyoA);
-        Pyo newPyo = pyoService.bookPyo(pyoA);
-        assertEquals(pyoA, newPyo);
+    public  void testGetAllTPyo(){
+        when(pyoService.getAllPyo()).thenReturn(pyolist);
+        ResponseEntity<List<Map<String, Object>>> response = pyoController.getBreaksPyo();
+        Assert.assertEquals(pyolist, response.getBody());
     }
 
-    @Test
-    public void testCancelPyo() {
-        pyoService.cancelPyo(pyoA.getBreakId());
-        verify(pyoRepository, times(1)).deleteById(pyoA.getBreakId());
-    }
+//    @Test
+//    public  void testBookPyo(){
+//        Mockito.when(pyoService.bookPyo(pyoA)).thenReturn(pyoA);
+//
+//        PyoService spy = PowerMockito.spy(pyoService);
+//        Mockito.doNothing().when(spy, "validatePyoRequest", ArgumentMatchers.any());
+//        ResponseEntity<Pyo> response =  pyoController.bookPyo(pyoDtoRequest);
+//        Assert.assertEquals(pyoA, response.getBody());
+//    }
 
     @Test
-    public  void testPyoExists(){
-        when(pyoRepository.existsById(pyoA.getBreakId())).thenReturn(true);
-        boolean result = pyoService.pyoExists(pyoA.getBreakId());
-        assertTrue(result);
+    public  void testDeleteByIdTest(){
+        when(pyoService.pyoExists(pyoA.getBreakId())).thenReturn(true);
+        pyoController.cancelPyo(pyoA.getBreakId());
+        verify(pyoService, times(1)).cancelPyo(pyoA.getBreakId());
     }
 
-    @Test
-    public  void testPyoExistsIdNotFound(){
-        when(pyoRepository.existsById(pyoA.getBreakId())).thenReturn(false);
-        boolean result = pyoService.pyoExists(pyoA.getBreakId());
-        assertFalse(result);
-    }
-
-    @Test
-    public  void testGetAllPyo(){
-        when(pyoRepository.findPyo()).thenReturn(pyolist);
-        List<Map<String, Object>> result = pyoService.getAllPyo();
-        assertEquals(pyolist, result);
+    @Test(expected = NotFoundException.class)
+    public  void testDeleteByIdTestUnknownBreakId(){
+        when(pyoService.pyoExists(3L)).thenThrow(new NotFoundException(""));
+        pyoController.cancelPyo(3L);
+        verify(pyoService, times(0)).cancelPyo(3L);
     }
 }

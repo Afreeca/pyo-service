@@ -24,9 +24,10 @@ CREATE TABLE if NOT EXISTS campaign(
 CREATE TABLE if NOT EXISTS break_campaign(
     id BIGINT AUTO_INCREMENT NOT NULL,
     break_id BIGINT NOT NULL,
+    advertiser_id VARCHAR(100) NOT NULL,
     campaign_id BIGINT NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE(break_id, campaign_id),
+    UNIQUE(break_id, advertiser_id),
     FOREIGN KEY(break_id) REFERENCES break(id),
     FOREIGN KEY(campaign_id) REFERENCES campaign(id)
 )engine=innodb;

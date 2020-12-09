@@ -3,9 +3,9 @@ package com.interview.itv.pyoservice.model;
 import com.interview.itv.pyoservice.utils.Types.Profile;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -33,12 +33,12 @@ public class Campaign {
     private Profile demographic;
 
     @ApiModelProperty(notes = "The target number of TV ratings for this campaign")
-    @NotBlank
+    @NotNull
     @Column(name="target_tvr")
     private int targetTVR;
 
     @ApiModelProperty(notes = "The percentage of target ratings that can be delivered with PYO")
-    @NotBlank
+    @NotNull
     @Column(name="pyo_percentage")
     private int pyoPercentage;
 }

@@ -1,11 +1,11 @@
-package com.interview.itv.pyoservice.service;
+package com.interview.itv.pyoservice.repository;
 
-import com.interview.itv.pyoservice.dto.PyoDtoRequest;
 import com.interview.itv.pyoservice.model.Break;
 import com.interview.itv.pyoservice.model.Campaign;
 import com.interview.itv.pyoservice.model.Pyo;
-import com.interview.itv.pyoservice.repository.PyoRepository;
+import com.interview.itv.pyoservice.service.PyoServiceImp;
 import com.interview.itv.pyoservice.utils.Types;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,22 +20,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PyoServiceTest {
-
-    @InjectMocks
-    PyoServiceImp pyoService;
+public class PyoRepositoryTest {
 
     @Mock
     PyoRepository pyoRepository;
 
+    @InjectMocks
+    PyoServiceImp pyoService;
+
     Break breakA;
     Campaign campaignA;
     Pyo pyoA;
-    PyoDtoRequest pyoDtoRequest;
 
     Map<String, Object> pyoMap;
     List<Map<String, Object>> pyolist;
@@ -63,11 +61,6 @@ public class PyoServiceTest {
         pyoA.setId(1L);
         pyoA.setCampaignId(2L);
 
-        pyoDtoRequest =  new PyoDtoRequest();
-        pyoDtoRequest.setAdvertiserId("242323");
-        pyoDtoRequest.setBreakId(1L);
-        pyoDtoRequest.setCampaignId(2L);
-
         pyoMap = new HashMap<>();
         pyoMap.put("spot_length", 210);
         pyoMap.put("duration", breakA.getDuration());
@@ -81,36 +74,9 @@ public class PyoServiceTest {
     }
 
     @Test
-    public void testBookPyo() {
-        when(pyoRepository.save(pyoA)).thenReturn(pyoA);
-        Pyo newPyo = pyoService.bookPyo(pyoA);
-        assertEquals(pyoA, newPyo);
-    }
-
-    @Test
-    public void testCancelPyo() {
-        pyoService.cancelPyo(pyoA.getBreakId());
-        verify(pyoRepository, times(1)).deleteById(pyoA.getBreakId());
-    }
-
-    @Test
-    public  void testPyoExists(){
-        when(pyoRepository.existsById(pyoA.getBreakId())).thenReturn(true);
-        boolean result = pyoService.pyoExists(pyoA.getBreakId());
-        assertTrue(result);
-    }
-
-    @Test
-    public  void testPyoExistsIdNotFound(){
-        when(pyoRepository.existsById(pyoA.getBreakId())).thenReturn(false);
-        boolean result = pyoService.pyoExists(pyoA.getBreakId());
-        assertFalse(result);
-    }
-
-    @Test
-    public  void testGetAllPyo(){
+    public void testFindPyo(){
         when(pyoRepository.findPyo()).thenReturn(pyolist);
         List<Map<String, Object>> result = pyoService.getAllPyo();
-        assertEquals(pyolist, result);
+        Assert.assertEquals(pyolist, result);
     }
 }
