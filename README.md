@@ -1,4 +1,4 @@
-# ITV PYO platform
+# ITV PYO Service
 
 ### Assumptions:
     * pyo-service is an Internal tools used by ITV departments
